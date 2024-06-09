@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: radioapi
+  name: radioapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radioapi
+  template:
+    metadata:
+      labels:
+        app: radioapi
+    spec:
+      containers:
+        - image: chucksn611/radioapi:latest
+          name: radioapi
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 4000
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 3
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: radio-cm
+                  key: port
+            - name: CLIENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: radio-cm
+                  key: client-url
+            - name: DB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: DB_URI
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: CLIENT_SECRET
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: ENCRYPTION_KEY
+            - name: GOOGLE_LOGIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: GOOGLE_LOGIN_PASSWORD
+            - name: NODEMAILER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: NODEMAILER_USER
+            - name: NODEMAILER_USER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: NODEMAILER_USER_PASS
+            - name: REDIRECT_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: REDIRECT_BASE_URL
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: SECRET
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: world-radio-secret
+                  key: SESSION_SECRET
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: radioapi-service
+  name: radioapi-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+  selector:
+    app: radioapi
+  type: ClusterIP
