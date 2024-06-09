@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./client
+    ports:
+      - "5000:80"
+    container_name: radioclient
+    networks:
+      - radionet
+    depends_on:
+      - api
+  api:
+    build: ./api
+    container_name: radioapi
+    networks:
+      - radionet
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./api/.env
+
+networks:
+  radionet:
