@@ -17,11 +17,34 @@ pipeline {
                 git 'https://github.com/chucksn/radio-app-full-stack.git'
             }
         }
-         stage('Docker version') { 
+         stage('Docker Build & tag') { 
             steps {
-                sh 'docker --version'
+                sh 'docker build -t chucksn611/radioappclient:latest ./frontend'
+                sh 'docker build -t chucksn611/radioapi:latest ./backend'
+                sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
+                sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
             }
         }
+        stage('Docker login') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-login-cred', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+                    sh 'echo $PASSWORD | docker login -u $USER_NAME --password-stdin'
+                }
+            }
+        }
+        stage('Docker push & logout') { 
+            steps {
+                sh """
+                docker push chucksn611/radioappclient:latest
+                docker push chucksn611/radioappclient:1.0.$BUILD_NUMBER
+                docker push chucksn611/radioapi:latest
+                docker push chucksn611/radioapi:$BUILD_NUMBER
+                docker logout
+                """
+            }
+        }
+        
+        
         // stage('Code Quality Analysis (sonarQube)') { 
         //     steps {
         //         sh "sonar-scanner -Dsonar.projectKey=test-project-1 -Dsonar.sources=. -Dsonar.host.url=${SONAR_HOST} -Dsonar.token=${SONAR_TEST_PROJ_TOKEN}"
