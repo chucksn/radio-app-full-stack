@@ -19,13 +19,15 @@ pipeline {
         }
         stage('Docker version') { 
             steps {
+                sh 'whoami'
                 sh 'docker --version'
             }
         }
          stage('Docker Build & tag') { 
             steps {
-                sh 'docker build -t chucksn611/radioappclient:latest ./frontend-app'
-                sh 'docker build -t chucksn611/radioapi:latest ./backend-app'
+                sh 'whoami'
+                sh 'docker build -f frontend-app/Dockerfile -t chucksn611/radioappclient:latest .'
+                sh 'docker build -f backend-app/Dockerfile -t chucksn611/radioapi:latest .'
                 sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
                 sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
             }
