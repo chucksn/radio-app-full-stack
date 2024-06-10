@@ -14,7 +14,12 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/chucksn/radio-app-full-stack.git']])
+                git 'https://github.com/chucksn/radio-app-full-stack.git'
+            }
+        }
+        stage('Docker version') { 
+            steps {
+                sh 'docker --version'
             }
         }
          stage('Docker Build & tag') { 
