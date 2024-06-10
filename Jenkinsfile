@@ -19,6 +19,8 @@ pipeline {
         }
          stage('Docker Build & tag') { 
             steps {
+                sh 'pwd'
+                sh 'ls -l'
                 sh 'docker build -f frontend/Dockerfile -t chucksn611/radioappclient:latest .'
                 sh 'docker build -f backend/Dockerfile -t chucksn611/radioapi:latest .'
                 sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
