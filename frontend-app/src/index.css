@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Itim&family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,300;1,400;1,500;1,600;1,700&family=Prosto+One&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Ubuntu:wght@300;400;500;700&family=Unbounded:wght@200;300;400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rhap_container {
+  padding: 0;
+  width: 8%;
+  background-color: rgba(0, 0, 0, 0);
+  box-shadow: none;
+}
+
+.rhap_controls-section {
+  position: relative;
+  bottom: 4px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Pagination library */
+.pagination {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(0, 0, 0, 0.5);
+  border-radius: 0.6rem;
+  color: white;
+  margin: 2.5rem 0;
+  width: 95%;
+  font-weight: 500;
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.active {
+  padding: 0 8px 0 8px;
+
+  color: rgb(255, 255, 40);
+}
+
+.disabled {
+  color: gray;
+}
+
+@media screen and (min-width: 640px) {
+  .pagination {
+    width: 80%;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pagination {
+    width: 50%;
+    font-size: 1.03rem;
+  }
+}
