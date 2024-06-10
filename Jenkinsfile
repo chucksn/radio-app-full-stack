@@ -17,11 +17,11 @@ pipeline {
                 git 'https://github.com/chucksn/radio-app-full-stack.git'
             }
         }
-        //  stage('Docker version') { 
-        //     steps {
-        //         sh 'docker --version'
-        //     }
-        // }
+         stage('Docker version') { 
+            steps {
+                sh 'docker --version'
+            }
+        }
         // stage('Code Quality Analysis (sonarQube)') { 
         //     steps {
         //         sh "sonar-scanner -Dsonar.projectKey=test-project-1 -Dsonar.sources=. -Dsonar.host.url=${SONAR_HOST} -Dsonar.token=${SONAR_TEST_PROJ_TOKEN}"
