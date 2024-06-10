@@ -19,8 +19,8 @@ pipeline {
         }
          stage('Docker Build & tag') { 
             steps {
-                sh 'docker build -t chucksn611/radioappclient:latest ./frontend'
-                sh 'docker build -t chucksn611/radioapi:latest ./backend'
+                sh 'docker build -t chucksn611/radioappclient:latest -f frontend/Dockerfile'
+                sh 'docker build -t chucksn611/radioapi:latest -f backend/Dockerfile'
                 sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
                 sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
             }
