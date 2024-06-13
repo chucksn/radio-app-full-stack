@@ -8,8 +8,7 @@ pipeline {
         dockerHome = tool 'docker-latest'
         PATH = "${dockerHome}/bin:${scannerHome}/bin:${PATH}"
         SONAR_HOST = credentials('sonarqube-host')
-        SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')
-        
+        SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')    
     }
     stages {
         stage('Git Checkout') {
@@ -23,15 +22,15 @@ pipeline {
                 sh 'docker --version'
             }
         }
-         stage('Docker Build & tag') { 
-            steps {
-                sh 'whoami'
-                sh 'docker build -f frontend-app/Dockerfile -t chucksn611/radioappclient:latest .'
-                sh 'docker build -f backend-app/Dockerfile -t chucksn611/radioapi:latest .'
-                sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
-                sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
-            }
-        }
+        //  stage('Docker Build & tag') { 
+        //     steps {
+        //         sh 'whoami'
+        //         sh 'docker build -f frontend-app/Dockerfile -t chucksn611/radioappclient:latest .'
+        //         sh 'docker build -f backend-app/Dockerfile -t chucksn611/radioapi:latest .'
+        //         sh 'docker tag chucksn611/radioappclient:latest chucksn611/radioappclient:1.0.$BUILD_NUMBER'
+        //         sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
+        //     }
+        // }
         stage('Docker login') { 
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-login-cred', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
@@ -39,17 +38,17 @@ pipeline {
                 }
             }
         }
-        stage('Docker push & logout') { 
-            steps {
-                sh """
-                docker push chucksn611/radioappclient:latest
-                docker push chucksn611/radioappclient:1.0.$BUILD_NUMBER
-                docker push chucksn611/radioapi:latest
-                docker push chucksn611/radioapi:$BUILD_NUMBER
-                docker logout
-                """
-            }
-        }
+        // stage('Docker push & logout') { 
+        //     steps {
+        //         sh """
+        //         docker push chucksn611/radioappclient:latest
+        //         docker push chucksn611/radioappclient:1.0.$BUILD_NUMBER
+        //         docker push chucksn611/radioapi:latest
+        //         docker push chucksn611/radioapi:$BUILD_NUMBER
+        //         docker logout
+        //         """
+        //     }
+        // }
         
         
         // stage('Code Quality Analysis (sonarQube)') { 
