@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'agent-1-hp' }
     tools {
         maven 'default' 
     }
