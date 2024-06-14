@@ -5,8 +5,7 @@ pipeline {
     }
     environment {
         scannerHome = tool 'sonar-scanner-5.0.1'
-        dockerHome = tool 'docker-latest'
-        PATH = "${dockerHome}/bin:${scannerHome}/bin:${PATH}"
+        PATH = "${scannerHome}/bin:${PATH}"
         SONAR_HOST = credentials('sonarqube-host')
         SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')    
     }
