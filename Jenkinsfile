@@ -17,7 +17,6 @@ pipeline {
         }
         stage('Docker version') { 
             steps {
-                sh 'whoami'
                 sh 'docker --version'
             }
         }
