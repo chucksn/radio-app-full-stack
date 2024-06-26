@@ -1,14 +1,14 @@
 pipeline {
     agent { label 'ssh-agent' }
     tools {
-        maven 'default' 
+        maven 'maven-3.9.8' 
     }
-    environment {
-        scannerHome = tool 'sonar-scanner-5.0.1'
-        PATH = "${scannerHome}/bin:${PATH}"
-        SONAR_HOST = credentials('sonarqube-host')
-        SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')    
-    }
+    // environment {
+    //     scannerHome = tool 'sonar-scanner-5.0.1'
+    //     PATH = "${scannerHome}/bin:${PATH}"
+    //     SONAR_HOST = credentials('sonarqube-host')
+    //     SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')    
+    // }
     stages {
         stage('Git Checkout') {
             steps {
