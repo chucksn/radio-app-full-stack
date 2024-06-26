@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'agent-1-hp' }
+    agent { label 'ssh-agent' }
     tools {
         maven 'default' 
     }
