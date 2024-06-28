@@ -3,12 +3,10 @@ pipeline {
     tools {
         maven 'maven-3.9.8' 
     }
-    // environment {
-    //     scannerHome = tool 'sonar-scanner-5.0.1'
-    //     PATH = "${scannerHome}/bin:${PATH}"
-    //     SONAR_HOST = credentials('sonarqube-host')
-    //     SONAR_TEST_PROJ_TOKEN = credentials('sonarqube-test-project-1')    
-    // }
+    environment {
+        scannerHome = tool 'sonar-scanner-6.1.0'
+        PATH = "${scannerHome}/bin:${PATH}"   
+    }
     stages {
         stage('Git Checkout') {
             steps {
@@ -29,13 +27,13 @@ pipeline {
         //         sh 'docker tag chucksn611/radioapi:latest chucksn611/radioapi:1.0.$BUILD_NUMBER'
         //     }
         // }
-        stage('Docker login') { 
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-login-cred', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                    sh 'echo $PASSWORD | docker login -u $USER_NAME --password-stdin'
-                }
-            }
-        }
+        // stage('Docker login') { 
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'docker-login-cred', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+        //             sh 'echo $PASSWORD | docker login -u $USER_NAME --password-stdin'
+        //         }
+        //     }
+        // }
         // stage('Docker push & logout') { 
         //     steps {
         //         sh """
@@ -49,11 +47,14 @@ pipeline {
         // }
         
         
-        // stage('Code Quality Analysis (sonarQube)') { 
-        //     steps {
-        //         sh "sonar-scanner -Dsonar.projectKey=test-project-1 -Dsonar.sources=. -Dsonar.host.url=${SONAR_HOST} -Dsonar.token=${SONAR_TEST_PROJ_TOKEN}"
-        //     }
-        // }
+        stage('Code Quality Analysis (sonarQube)') { 
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    sh 'sonar-scanner'
+                }
+                
+            }
+        }
         stage('Maven version') { 
             steps {
                 sh 'mvn --version'
