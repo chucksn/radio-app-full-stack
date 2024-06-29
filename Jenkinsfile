@@ -18,7 +18,7 @@ pipeline {
         }
         stage('deployment environment') { 
             steps {
-                echo '$params.DEPLOYMENT_ENV'
+                echo "${params.DEPLOYMENT_ENV}"
             }
         }
         stage('Docker version') { 
