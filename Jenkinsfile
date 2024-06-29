@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven 'maven-3.9.8' 
     }
+    parameters {
+        string defaultValue: 'staging', description: 'Which environment do you want to deploy to?', name: 'DEPLOYMENT_ENV'
+    }
     environment {
         scannerHome = tool 'sonar-scanner-6.1.0'
         PATH = "${scannerHome}/bin:${PATH}"   
@@ -11,6 +14,11 @@ pipeline {
         stage('Git Checkout') {
             steps {
                 git 'https://github.com/chucksn/radio-app-full-stack.git'
+            }
+        }
+        stage('deployment environment') { 
+            steps {
+                echo '$params.DEPLOYMENT_ENV'
             }
         }
         stage('Docker version') { 
@@ -55,9 +63,11 @@ pipeline {
                 
             }
         }
-        stage('Maven version') { 
+        stage('Quality Gate') { 
             steps {
-                sh 'mvn --version'
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
